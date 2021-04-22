@@ -34,21 +34,51 @@
 ## 🔨**使用方式**
 
 1. Fork仓库
+   
    + 点击右上角的`Fork`，将仓库Fork到自己的账号下
+   
+     ![1.png](https://i.loli.net/2021/04/22/c3AO9MGroSKFW5Z.png)
 2. 获取Cookie
+   
    + 推荐采用微信PC客户端抓包的方式获取，使用Wireshark或Charles等抓包工具，获取小程序"uestc学生情况报送“登陆时所用的cookie（这一步比较难，建议新手在网上搜索抓包博客教程跟着做）
 3. 添加 Cookie 至 Secrets
-   + 回到自己的项目页面，依次点击`Settings`-->`Secrets`-->`New secret`
+   + 回到自己的项目页面，依次点击`Settings`-->`Secrets`-->`New repository secret`
+
+     ![2.png](https://i.loli.net/2021/04/22/nsX6qYkMr3O7JKA.png)
+
    + `Name`中填入`COOKIE`，将抓包到的`Cookie`粘贴到`Value`中，点击`Add secret`添加
+
+     ![3.png](https://i.loli.net/2021/04/22/F2QGyZLUXtn5fDo.png)
+
+     注意：
+
      + Name的框中只能填`COOKIE`，不要填其他
      + 如果有多个 Cookie，不同账号的`Cookie`值之间用`#`分隔，如：`Cookie1#Cookie2#Cookie3`
 4. 启用Action
-   + 回到自己的项目页面，点击上方的`Actions`，再点击左侧的`uestc_temperature_report`，再点击`Run workflow`
+
+   + 回到自己的项目页面，点击上方的`Actions`，允许启动 workflows
+
+     ![4.png](https://i.loli.net/2021/04/22/odAhnRwtiTWymMz.png)
+
+     ![5.png](https://i.loli.net/2021/04/22/9fsOp2iT8md64BX.png)
+
+   + 再点击左侧的`uestc_temperature_report`，再点击`Run workflow`
+
+     ![6.png](https://i.loli.net/2021/04/22/Ze8u4gKFlEtaN6o.png)
 
 以上，项目部署完毕
 
 + 项目会在每日凌晨 0:30 左右进行自动上报，也可重新创建Action手动触发上报
+
 + 在`Actions`页面点击`uestc_temperature_report`-->`build`-->`Run Main`查看运行日志
+
+  ![7.png](https://i.loli.net/2021/04/22/oB8qXNcUZwJfj9i.png)
+
+  ![8.png](https://i.loli.net/2021/04/22/yQiNKLM6I3SBT1A.png)
+
+  ![9.png](https://i.loli.net/2021/04/22/bYWVBTJvFGwoqDC.png)
+
+  
 
 
 
