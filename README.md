@@ -39,8 +39,10 @@
    
      ![1.png](https://i.loli.net/2021/04/22/c3AO9MGroSKFW5Z.png)
 2. 获取Cookie
-   
-   + 推荐采用微信PC客户端抓包的方式获取，使用Wireshark或Charles等抓包工具，获取小程序"uestc学生情况报送“登陆时所用的cookie（参考视频正在制作ing，后续补上链接）
+
+   + 推荐采用微信PC客户端抓包的方式获取，使用Wireshark或Charles等抓包工具，获取小程序"uestc学生情况报送“登陆时所用的cookie
+
+     参考视频 https://www.bilibili.com/video/BV1Kf4y1p727
 3. 添加 Cookie 至 Secrets
    + 回到自己的项目页面，依次点击`Settings`-->`Secrets`-->`New repository secret`
 
