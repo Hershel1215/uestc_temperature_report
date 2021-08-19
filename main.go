@@ -21,6 +21,21 @@ type reportMessage struct {
 	Location                    string `json:"location"`
 }
 
+type reportMessageHome struct{
+	CurrentAddress 				string `json:"currentAddress"`
+	Remark						string `json:"remark"`
+	HealthInfo					string `json:"healthInfo"`
+	IsContactWuhan				int `json:"isContactWuhan"`
+	IsFever						int `json:"isFever"`
+	IsInSchool					int `json:"isInSchool"`
+	IsLeaveChengdu				int `json:"isLeaveChengdu"`
+	IsSymptom					int `json:"isSymptom"`
+	Temperature					string `json:"temperature"`
+	Province					string `json:"province"`
+	City						string `json:"city"`
+	County						string `json:"county"`
+}
+
 func init() {
 	flag.StringVar(&cookieStr, "cookie", "", "")
 }
@@ -98,7 +113,8 @@ func checkReport(cookie string, id int) {
 	}
 	if isCheck == 0 {
 		log.Printf("正在为第%d位学生上报\n", id)
-		DoReport(cookie, id)
+		DoReportHome(cookie, id)
+		//DoReport(cookie, id)
 	} else if isCheck == 1 {
 		log.Printf("第%d位同学已经上报过了\n", id)
 		reportFault(id)
@@ -113,6 +129,9 @@ func checkReport(cookie string, id int) {
 
 func DoReport(cookie string, id int) {
 	url := "https://jzsz.uestc.edu.cn/wxvacation/monitorRegisterForReturned"
+
+	//urlhome := "https://jzsz.uestc.edu.cn/wxvacation/monitorRegister"
+
 	oneReportMessage := reportMessage{
 		HealthCondition:             "正常",
 		TodayMorningTemperature:     "36°C~36.5°C",
@@ -120,6 +139,105 @@ func DoReport(cookie string, id int) {
 		YesterdayMiddayTemperature:  "36°C~36.5°C",
 		Location:                    "四川省成都市郫都区银杏大道",
 	}
+
+	//oneReportMessageHome := reportMessageHome{
+	//	CurrentAddress:             "山西省太原市迎泽区",
+	//	Remark:     				"",
+	//	HealthInfo:                 "正常",
+	//	IsContactWuhan:             0,
+	//	IsFever:                    0,
+	//	IsInSchool:                 0,
+	//	IsLeaveChengdu:             1,
+	//	IsSymptom:                  0,
+	//	Temperature:                "36°C~36.5°C",
+	//	Province:                   "山西省",
+	//	City:                   	"太原市",
+	//	County:                     "迎泽区",
+	//}
+
+	jsons, err := json.Marshal(oneReportMessage)
+	if err != nil {
+		log.Printf("json.Marshal error, err: %v\n", err)
+		reportFault(id)
+		return
+	}
+	result := string(jsons)
+	jsoninfo := strings.NewReader(result)
+
+	request, _ := http.NewRequest("POST", url, jsoninfo)
+	request.Header.Add("content-type", "application/json")
+	request.Header.Add("User-Agent", "Mozilla / 5.0(Linux; Android 10; LIO-AN00 Build/HUAWEILIO-AN00; wv) AppleWebKit / 537.36(KHTML, like Gecko) Version / 4.0 Chrome / 66.0 .3359 .158 Mobile Safari / 537.36 MicroMessenger / 7.0 .13 .1640(0x27000D39) Process / appbrand3 NetType / WIFI Language / zh_CN ABI / arm64 WeChat / arm64")
+	//request.Header.Add("Accept-Encoding","gzip, compress, br, deflate")
+	request.Header.Add("Content-Length", "220")
+	request.Header.Add("encode", "false")
+	request.Header.Add("Connection", "keep-alive")
+	request.Header.Add("x-tag", "flyio")
+	request.Header.Add("charset", "utf-8")
+	request.Header.Add("cookie", cookie)
+	request.Header.Add("Referer", "https://servicewechat.com/wx521c0c16b77041a0/28/page-frame.html")
+	response, err := http.DefaultClient.Do(request)
+	if err != nil {
+		log.Printf("request error, err: %v\n", err)
+	}
+	defer response.Body.Close()
+	context, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		log.Printf("ioutil.ReadAll(response.Body) error: %v\n", err)
+		reportFault(id)
+		return
+	}
+	responseData := make(map[string]interface{})
+	err = json.Unmarshal(context, &responseData)
+	if err != nil {
+		log.Printf("json.Unmarshal(context, response) error: %v\n", err)
+		reportFault(id)
+		return
+	}
+	v, ok := responseData["status"]
+	if !ok {
+		log.Printf("responseData data form had been changed, error: %v\n", err)
+		reportFault(id)
+		return
+	}
+	status := v.(bool)
+	if status == false {
+		log.Printf("status is false, student has report\n")
+		reportFault(id)
+		return
+	}
+
+	log.Printf("第%d位同学上报成功\n", id)
+	successNumber++
+}
+
+func DoReportHome(cookie string, id int) {
+	url := "https://jzsz.uestc.edu.cn/wxvacation/monitorRegister"
+
+	//urlhome := "https://jzsz.uestc.edu.cn/wxvacation/monitorRegister"
+
+	//oneReportMessage := reportMessage{
+	//	HealthCondition:             "正常",
+	//	TodayMorningTemperature:     "36°C~36.5°C",
+	//	YesterdayEveningTemperature: "36°C~36.5°C",
+	//	YesterdayMiddayTemperature:  "36°C~36.5°C",
+	//	Location:                    "四川省成都市郫都区银杏大道",
+	//}
+
+	oneReportMessage := reportMessageHome{
+		CurrentAddress:             "四川省成都市郫都区银杏大道",
+		Remark:     				"",
+		HealthInfo:                 "正常",
+		IsContactWuhan:             0,
+		IsFever:                    0,
+		IsInSchool:                 0,
+		IsLeaveChengdu:             1,
+		IsSymptom:                  0,
+		Temperature:                "36°C~36.5°C",
+		Province:                   "四川省",
+		City:                   	"成都市",
+		County:                     "郫都区",
+	}
+
 	jsons, err := json.Marshal(oneReportMessage)
 	if err != nil {
 		log.Printf("json.Marshal error, err: %v\n", err)
