@@ -113,7 +113,7 @@ func checkReport(cookie string, id int) {
 	}
 	if isCheck == 0 {
 		log.Printf("正在为第%d位学生上报\n", id)
-		DoReportHome(cookie, id)
+		DoReport(cookie, id)
 		//DoReport(cookie, id)
 	} else if isCheck == 1 {
 		log.Printf("第%d位同学已经上报过了\n", id)
@@ -130,7 +130,7 @@ func checkReport(cookie string, id int) {
 func DoReport(cookie string, id int) {
 	url := "https://jzsz.uestc.edu.cn/wxvacation/monitorRegisterForReturned"
 
-	//urlhome := "https://jzsz.uestc.edu.cn/wxvacation/monitorRegister"
+	// urlhome := "https://jzsz.uestc.edu.cn/wxvacation/monitorRegister"
 
 	oneReportMessage := reportMessage{
 		HealthCondition:             "正常",
@@ -140,20 +140,20 @@ func DoReport(cookie string, id int) {
 		Location:                    "四川省成都市郫都区银杏大道",
 	}
 
-	//oneReportMessageHome := reportMessageHome{
-	//	CurrentAddress:             "山西省太原市迎泽区",
-	//	Remark:     				"",
-	//	HealthInfo:                 "正常",
-	//	IsContactWuhan:             0,
-	//	IsFever:                    0,
-	//	IsInSchool:                 0,
-	//	IsLeaveChengdu:             1,
-	//	IsSymptom:                  0,
-	//	Temperature:                "36°C~36.5°C",
-	//	Province:                   "山西省",
-	//	City:                   	"太原市",
-	//	County:                     "迎泽区",
-	//}
+	// oneReportMessageHome := reportMessageHome{
+	// 	CurrentAddress:             "山西省太原市迎泽区",
+	// 	Remark:     				"",
+	// 	HealthInfo:                 "正常",
+	// 	IsContactWuhan:             0,
+	// 	IsFever:                    0,
+	// 	IsInSchool:                 0,
+	// 	IsLeaveChengdu:             1,
+	// 	IsSymptom:                  0,
+	// 	Temperature:                "36°C~36.5°C",
+	// 	Province:                   "山西省",
+	// 	City:                   	"太原市",
+	// 	County:                     "迎泽区",
+	// }
 
 	jsons, err := json.Marshal(oneReportMessage)
 	if err != nil {
