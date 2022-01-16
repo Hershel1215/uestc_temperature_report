@@ -153,7 +153,7 @@ func DoReport(cookie string, id int) {
 	// 	IsSymptom:                  0,
 	// 	Temperature:                "36°C~36.5°C",
 	// 	Province:                   "山西省",
-	// 	City:                   	"太原市",
+	// 	City:                       "太原市",
 	// 	County:                     "迎泽区",
 	// }
 
