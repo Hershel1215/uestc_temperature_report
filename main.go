@@ -25,7 +25,7 @@ type reportMessageHome struct{
 	CurrentAddress 				string `json:"currentAddress"`
 	Remark						string `json:"remark"`
 	HealthInfo					string `json:"healthInfo"`
-	HealthColor:				string `json:"healthColor"`
+	HealthColor					string `json:"healthColor"`
 	IsContactWuhan				int `json:"isContactWuhan"`
 	IsFever						int `json:"isFever"`
 	IsInSchool					int `json:"isInSchool"`
