@@ -25,15 +25,16 @@ type reportMessageHome struct{
 	CurrentAddress 				string `json:"currentAddress"`
 	Remark						string `json:"remark"`
 	HealthInfo					string `json:"healthInfo"`
+	HealthColor:				string `json:"healthColor"`
 	IsContactWuhan				int `json:"isContactWuhan"`
-	// IsFever						int `json:"isFever"`
+	IsFever						int `json:"isFever"`
 	IsInSchool					int `json:"isInSchool"`
 	IsLeaveChengdu				int `json:"isLeaveChengdu"`
 	IsSymptom					int `json:"isSymptom"`
 	Temperature					string `json:"temperature"`
-	// Province					string `json:"province"`
-	// City						string `json:"city"`
-	// County						string `json:"county"`
+	Province					string `json:"province"`
+	City						string `json:"city"`
+	County						string `json:"county"`
 }
 
 func init() {
@@ -220,15 +221,16 @@ func DoReportHome(cookie string, id int) {
 		CurrentAddress:             "湖南省衡阳市常宁市劳动南路",
 		Remark:     				"",
 		HealthInfo:                 "正常",
+		HealthColor:				"绿色",
 		IsContactWuhan:             0,
-		// IsFever:                    0,
+		IsFever:                    0,
 		IsInSchool:                 0,
 		IsLeaveChengdu:             1,
 		IsSymptom:                  0,
 		Temperature:                "36°C~36.5°C",
-		// Province:                   "湖南省",
-		// City:                   	"衡阳市",
-		// County:                     "常宁市",
+		Province:                   "湖南省",
+		City:                   	"衡阳市",
+		County:                     "常宁市",
 	}
 
 	jsons, err := json.Marshal(oneReportMessage)
