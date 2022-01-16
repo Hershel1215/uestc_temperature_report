@@ -26,14 +26,14 @@ type reportMessageHome struct{
 	Remark						string `json:"remark"`
 	HealthInfo					string `json:"healthInfo"`
 	IsContactWuhan				int `json:"isContactWuhan"`
-	IsFever						int `json:"isFever"`
+	// IsFever						int `json:"isFever"`
 	IsInSchool					int `json:"isInSchool"`
 	IsLeaveChengdu				int `json:"isLeaveChengdu"`
 	IsSymptom					int `json:"isSymptom"`
 	Temperature					string `json:"temperature"`
-	Province					string `json:"province"`
-	City						string `json:"city"`
-	County						string `json:"county"`
+	// Province					string `json:"province"`
+	// City						string `json:"city"`
+	// County						string `json:"county"`
 }
 
 func init() {
@@ -61,7 +61,7 @@ func reportFault(id int) {
 // check if it had report
 func checkReport(cookie string, id int) {
 	client := &http.Client{}
-	url := "https://jzsz.uestc.edu.cn/wxvacation/checkRegisterNew"
+	url := "https://jzsz.uestc.edu.cn/wxvacation/api/epidemic/checkRegisterNew"
 	request, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		log.Printf("NewRequest error: %v\n", err)
@@ -77,7 +77,9 @@ func checkReport(cookie string, id int) {
 	request.Header.Add("x-tag", "flyio")
 	request.Header.Add("charset", "utf-8")
 	request.Header.Add("cookie", cookie)
-	request.Header.Add("Referer", "https://servicewechat.com/wx521c0c16b77041a0/28/page-frame.html")
+	// request.Header.Add("Referer", "https://servicewechat.com/wx521c0c16b77041a0/28/page-frame.html")
+	request.Header.Add("Referer", "https://jzsz.uestc.edu.cn/epidemic2/index.html")
+
 	response, err := client.Do(request)
 	if err != nil {
 		log.Printf("client.Do(request) error: %v\n", err)
@@ -113,7 +115,7 @@ func checkReport(cookie string, id int) {
 	}
 	if isCheck == 0 {
 		log.Printf("正在为第%d位学生上报\n", id)
-		DoReport(cookie, id)
+		DoReportHome(cookie, id)
 		//DoReport(cookie, id)
 	} else if isCheck == 1 {
 		log.Printf("第%d位同学已经上报过了\n", id)
@@ -174,7 +176,8 @@ func DoReport(cookie string, id int) {
 	request.Header.Add("x-tag", "flyio")
 	request.Header.Add("charset", "utf-8")
 	request.Header.Add("cookie", cookie)
-	request.Header.Add("Referer", "https://servicewechat.com/wx521c0c16b77041a0/28/page-frame.html")
+	// request.Header.Add("Referer", "https://servicewechat.com/wx521c0c16b77041a0/28/page-frame.html")
+	request.Header.Add("Referer", "https://jzsz.uestc.edu.cn/epidemic2/index.html")
 	response, err := http.DefaultClient.Do(request)
 	if err != nil {
 		log.Printf("request error, err: %v\n", err)
@@ -211,31 +214,21 @@ func DoReport(cookie string, id int) {
 }
 
 func DoReportHome(cookie string, id int) {
-	url := "https://jzsz.uestc.edu.cn/wxvacation/monitorRegister"
-
-	//urlhome := "https://jzsz.uestc.edu.cn/wxvacation/monitorRegister"
-
-	//oneReportMessage := reportMessage{
-	//	HealthCondition:             "正常",
-	//	TodayMorningTemperature:     "36°C~36.5°C",
-	//	YesterdayEveningTemperature: "36°C~36.5°C",
-	//	YesterdayMiddayTemperature:  "36°C~36.5°C",
-	//	Location:                    "四川省成都市郫都区银杏大道",
-	//}
+	url := "https://jzsz.uestc.edu.cn/wxvacation/api/epidemic/monitorRegister"
 
 	oneReportMessage := reportMessageHome{
-		CurrentAddress:             "四川省成都市郫都区银杏大道",
+		CurrentAddress:             "湖南省衡阳市常宁市劳动南路",
 		Remark:     				"",
 		HealthInfo:                 "正常",
 		IsContactWuhan:             0,
-		IsFever:                    0,
+		// IsFever:                    0,
 		IsInSchool:                 0,
 		IsLeaveChengdu:             1,
 		IsSymptom:                  0,
 		Temperature:                "36°C~36.5°C",
-		Province:                   "四川省",
-		City:                   	"成都市",
-		County:                     "郫都区",
+		// Province:                   "湖南省",
+		// City:                   	"衡阳市",
+		// County:                     "常宁市",
 	}
 
 	jsons, err := json.Marshal(oneReportMessage)
@@ -257,7 +250,8 @@ func DoReportHome(cookie string, id int) {
 	request.Header.Add("x-tag", "flyio")
 	request.Header.Add("charset", "utf-8")
 	request.Header.Add("cookie", cookie)
-	request.Header.Add("Referer", "https://servicewechat.com/wx521c0c16b77041a0/28/page-frame.html")
+	// request.Header.Add("Referer", "https://servicewechat.com/wx521c0c16b77041a0/28/page-frame.html")
+	request.Header.Add("Referer", "https://jzsz.uestc.edu.cn/epidemic2/index.html")
 	response, err := http.DefaultClient.Do(request)
 	if err != nil {
 		log.Printf("request error, err: %v\n", err)
