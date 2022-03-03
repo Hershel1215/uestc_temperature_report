@@ -116,8 +116,8 @@ func checkReport(cookie string, id int) {
 	}
 	if isCheck == 0 {
 		log.Printf("正在为第%d位学生上报\n", id)
-		DoReportHome(cookie, id)
-		//DoReport(cookie, id)
+ 		//DoReportHome(cookie, id)
+		DoReport(cookie, id)
 	} else if isCheck == 1 {
 		log.Printf("第%d位同学已经上报过了\n", id)
 		reportFault(id)
